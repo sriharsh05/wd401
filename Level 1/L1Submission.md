@@ -66,6 +66,6 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 
 # Iterative Development Process:
 
-<!-- Image for Flowchart -->
+<img width="802" alt="L1-flowchart" src="https://github.com/sriharsh05/wd401/assets/114745442/b4cc0666-5f88-4c1a-897e-16ab4d642894">
 
-![Flowchart](
+
