@@ -102,12 +102,13 @@ GitHub Actions is used to automate the test suite execution on GitHub. It is a C
 These are the tests that are executed using GitHub Actions:
 
 ### Unit tests using Jest 
+<img width="960" alt="jest" src="https://github.com/sriharsh05/wd401/assets/114745442/b4ffbfc7-01ee-4755-bf60-b0f018799725">
 
-Image: ![Jest](https://jestjs.io/img/jest.svg)
 
 ### Integration tests using Cypress
+<img width="637" alt="cypress1" src="https://github.com/sriharsh05/wd401/assets/114745442/33bb7204-0bd7-4a46-91a1-9ecbe302aaaa">
 
-Image: ![Cypress](https://www.cypress.io/static/cypress-logo-4d6e04c9f3b3f6c4a7c119b0e5a0f3f3.png)
+<img width="614" alt="cypress2" src="https://github.com/sriharsh05/wd401/assets/114745442/ca1213f6-1385-4d13-a95d-03360a3de9db">
 
 
 The test suite runs automatically when pushed to GitHub. The test suite is configured using Jest and Cypress.
@@ -198,5 +199,4 @@ The workflow file contains the following steps:
 This way, the workflow file defines the actions to be executed and automates the test suite execution on GitHub.
 
 The following is the workflow that is executed using GitHub Actions:
-
-Image: ![GitHub Actions](https://github.githubassets.com/images/modules/site/social-cards/actions.png)
+<img width="940" alt="actions" src="https://github.com/sriharsh05/wd401/assets/114745442/9730dc5a-c4d0-482c-83e0-28e3f58b1dfe">
