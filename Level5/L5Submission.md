@@ -188,10 +188,8 @@ env:
 
 - This ensures that the development team is immediately notified in case of any errors during the pipeline execution.
 
-### Video of test cases and pipeline execution:
+### Video of test cases and pipeline execution: 
 
-
-
-https://github.com/sriharsh05/wd401/assets/114745442/471415e8-c9cd-4d33-8cd2-cabe70fc143d
+https://drive.google.com/file/d/1wYR4I5sC0DhzHg4zw2ycsXdO8c_nZbmC/view?usp=sharing
 
 
