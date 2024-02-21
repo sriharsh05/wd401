@@ -174,7 +174,7 @@ jobs:
       - name: Run integration tests
         run: |
           npm install cypress cypress-json-results
-          npx cypress run --env STUDENT_SUBMISSION_URL="http://localhost:3000/"
+          npx cypress run --env ROOT_URL="http://localhost:3000/"
 
 ```
 
