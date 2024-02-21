@@ -2,25 +2,28 @@
 
 ```yaml
 
-name: Auto test the project
+name: CI/CD
+
 on: push
+
 env:
-  PG_DATABASE: wd-project-test
-  PG_USER: postgres
-  PG_PASSWORD: admin
+  PG_DATABASE: "${{ secrets.POSTGRES_DATABASE }}"
+  PG_USER: "${{ secrets.POSTGRES_USER }}"
+  PG_PASSWORD: "${{ secrets.POSTGRES_PASSWORD }}"
+
+# Jobs
 jobs:
   
   run-tests:
-    
     runs-on: ubuntu-latest
 
     services:
-=      postgres:
+      postgres:
         image: postgres:11.7
         env:
-          PG_DATABASE: ${{ secrets.PG_DATABASE }}
-          PG_USER: ${{ secrets.PG_USER }}
-          PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
+           PG_DATABASE: "${{ secrets.POSTGRES_DATABASE }}"
+           PG_USER: "${{ secrets.POSTGRES_USER }}"
+           PG_PASSWORD: "${{ secrets.POSTGRES_PASSWORD }}"
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -34,14 +37,14 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install dependencies
-        run:  npm ci
+        run: npm ci
 
       - name: Run unit tests
         run: npm test
+
       - name: Run the app
         id: run-app
         run: |
-          npm install
           npx sequelize-cli db:drop
           npx sequelize-cli db:create
           npx sequelize-cli db:migrate
@@ -51,7 +54,7 @@ jobs:
       - name: Run integration tests
         run: |
           npm install cypress cypress-json-results
-          npx cypress run --env ROOT_URL="http://localhost:3000/"
+          npx cypress run
 
 ```
 
