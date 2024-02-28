@@ -146,16 +146,74 @@ env:
 - Add the webhook URL to the action workflow file in the following way.
 
 ```yaml
- notify:
-    # Define the job dependencies
-    needs: [run-tests]
+name: CI/CD
+on: push
+
+
+env:
+  PG_DATABASE: "${{ secrets.POSTGRES_DATABASE }}"
+  PG_USER: "${{ secrets.POSTGRES_USER }}"
+  PG_PASSWORD: "${{ secrets.POSTGRES_PASSWORD }}"
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:11.7
+        env:
+          POSTGRES_USER: "postgres"
+          POSTGRES_PASSWORD: "admin"
+          POSTGRES_DB: "wd-todo-test"
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm ci
+      - name: Run unit tests
+        run: npm test
+      - name: Run the app
+        id: run-app
+        run: |
+          npx sequelize-cli db:drop
+          npx sequelize-cli db:create
+          npx sequelize-cli db:migrate
+          PORT=3000 npm start &
+          sleep 5
+      - name: Run integration tests
+        run: |
+          npm install cypress cypress-json-results
+          npx cypress run
+
+  deploy:
+    needs: run-tests
+    runs-on: ubuntu-latest
+    if: needs.run-tests.result == 'success'
+
+    steps:
+      - name: Deploy to production
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: "${{ secrets.MY_RENDER_SERVICE_ID }}"
+          api-key: "${{ secrets.MY_RENDER_API_KEY }}"
+
+  notify:
+    needs: [run-tests, deploy]
     runs-on: ubuntu-latest
 
     if: ${{ always() }}
     steps:
       - name: Send Slack notification on success
 
-        # Send a Slack notification if the tests and deployment are successful
         if: ${{ needs.run-tests.result == 'success' && needs.deploy.result == 'success' }}
         uses: slackapi/slack-github-action@v1.25.0
         with:
@@ -193,6 +251,4 @@ env:
 
 ### Video of test cases and pipeline execution: 
 
-https://drive.google.com/file/d/1wYR4I5sC0DhzHg4zw2ycsXdO8c_nZbmC/view?usp=sharing
-
-
+https://drive.google.com/file/d/1UxJlTyiSbCtGsgJWB1UwVY_IzIhJ3691/view?usp=sharing
